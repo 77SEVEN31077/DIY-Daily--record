@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打飛機日常紀錄 - 私人飛行日誌</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #1e3c72, #2a5298); color: #fff; min-height: 100vh; }
+        .container { max-width: 900px; }
+        .card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: none; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        .hero { padding: 4rem 0; text-align: center; }
+        .hero h1 { font-size: 3rem; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.2rem; opacity: 0.9; }
+        .form-control, .form-select { background: rgba(255,255,255,0.2); border: none; color: #fff; }
+        .form-control::placeholder { color: rgba(255,255,255,0.7); }
+        .btn-primary { background: #ff6b6b; border: none; transition: all 0.3s; }
+        .btn-primary:hover { background: #ff8787; transform: translateY(-2px); }
+        .table { background: rgba(255,255,255,0.15); }
+        .table th, .table td { border: none; }
+        footer { margin-top: 5rem; padding: 2rem 0; text-align: center; opacity: 0.7; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <!-- 登入頁面 -->
+        <div id="loginSection" class="text-center hero">
+            <h1>✈️ 私人飛行日誌</h1>
+            <p class="lead">歡迎來到你的私人飛行紀錄空間。<br>這裡是屬於你的天空，記錄每一次的「起飛」與「巡航」。</p>
+            <div class="card mx-auto mt-5 p-4" style="max-width: 400px;">
+                <h4>使用 Email 登入</h4>
+                <div class="mb-3">
+                    <input type="email" id="loginEmail" class="form-control" placeholder="輸入你的 Email">
+                </div>
+                <button id="sendLinkBtn" class="btn btn-primary w-100">發送魔法登入連結</button>
+                <p id="loginMsg" class="mt-3 text-warning"></p>
+            </div>
+        </div>
+
+        <!-- 主應用頁面 -->
+        <div id="appSection" class="d-none">
+            <div class="hero">
+                <h1>✈️ 歡迎回來，<span id="userNickname">飛行員</span>！</h1>
+                <p>今天的天空也很適合飛行～ 記錄你的日常吧。</p>
+            </div>
+
+            <!-- 修改暱稱 -->
+            <div class="card p-4 mb-4">
+                <h5>修改暱稱</h5>
+                <div class="input-group">
+                    <input type="text" id="nicknameInput" class="form-control" placeholder="輸入新暱稱">
+                    <button id="updateNicknameBtn" class="btn btn-primary">更新</button>
+                </div>
+            </div>
+
+            <!-- 記錄飛行 -->
+            <div class="card p-4 mb-5">
+                <h5>記錄一次飛行</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label>日期</label>
+                        <input type="date" id="recordDate" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label>時間（大約）</label>
+                        <select id="recordHour" class="form-select"></select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button id="addRecordBtn" class="btn btn-primary w-100">記錄</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 月排行榜 -->
+            <div class="card p-4">
+                <h5>🪜 本月飛行排行榜（前 50 名）</h5>
+                <div id="leaderboardLoading" class="text-center py-4">載入中...</div>
+                <table class="table table-hover text-white d-none" id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>暱稱</th>
+                            <th>次數</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-4">
+                <button id="logoutBtn" class="btn btn-outline-light">登出</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>免責聲明：此網站僅用於個人追踪，只有娛樂價值，不提供其他額外的服務。</p>
+    </footer>
+
+    <script>
+        // ←←←←←←←←←←←←←← 這裡要把你剛剛複製的 firebaseConfig 貼進來 ←←←←←←←←←←←←←←
+        const firebaseConfig = {
+              apiKey: "AIzaSyDub01y9nvtEKGrVg6DWLYVwVlBs2YFgxs",
+              authDomain: "diy-daily-record.firebaseapp.com",
+              projectId: "diy-daily-record",
+              storageBucket: "diy-daily-record.firebasestorage.app",
+              messagingSenderId: "1030894380378",
+              appId: "1:1030894380378:web:16b1ce08b6a4e51f1e3f63",
+              measurementId: "G-NPT3TLF0PK"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // 時間選單 00-23
+        const hourSelect = document.getElementById('recordHour');
+        for (let i = 0; i < 24; i++) {
+            const opt = document.createElement('option');
+            opt.value = i.toString().padStart(2, '0');
+            opt.textContent = i.toString().padStart(2, '0') + ':00';
+            hourSelect.appendChild(opt);
+        }
+
+        // 預設今天
+        document.getElementById('recordDate').valueAsDate = new Date();
+
+        // 魔法連結設定
+        const actionCodeSettings = {
+            url: window.location.href.split('?')[0],  // 返回目前頁面
+            handleCodeInApp: true
+        };
+
+        // 發送登入連結
+        document.getElementById('sendLinkBtn').onclick = () => {
+            const email = document.getElementById('loginEmail').value.trim();
+            if (!email) return alert('請輸入 Email');
+            document.getElementById('loginMsg').textContent = '發送中...';
+            auth.sendSignInLinkToEmail(email, actionCodeSettings)
+                .then(() => {
+                    window.localStorage.setItem('emailForSignIn', email);
+                    document.getElementById('loginMsg').textContent = '已發送到你的信箱！請去收信並點擊連結登入（也檢查垃圾郵件）';
+                })
+                .catch(err => alert('錯誤：' + err.message));
+        };
+
+        // 如果是從郵件點回來的
+        if (auth.isSignInWithEmailLink(window.location.href)) {
+            let email = window.localStorage.getItem('emailForSignIn');
+            if (!email) email = prompt('請再輸入一次你的 Email');
+            auth.signInWithEmailLink(email, window.location.href)
+                .then(() => window.localStorage.removeItem('emailForSignIn'))
+                .catch(err => alert('登入失敗：' + err.message));
+        }
+
+        // 登入狀態監聽
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('loginSection').classList.add('d-none');
+                document.getElementById('appSection').classList.remove('d-none');
+                loadNickname(user);
+                loadLeaderboard();
+            } else {
+                document.getElementById('loginSection').classList.remove('d-none');
+                document.getElementById('appSection').classList.add('d-none');
+            }
+        });
+
+        function loadNickname(user) {
+            db.collection('users').doc(user.uid).get().then(doc => {
+                const nick = doc.exists && doc.data().nickname ? doc.data().nickname : '飛行員';
+                document.getElementById('userNickname').textContent = nick;
+                document.getElementById('nicknameInput').value = nick;
+            });
+        }
+
+        // 更新暱稱
+        document.getElementById('updateNicknameBtn').onclick = () => {
+            const nick = document.getElementById('nicknameInput').value.trim() || '匿名飛行員';
+            db.collection('users').doc(auth.currentUser.uid).set({nickname: nick}, {merge: true})
+                .then(() => {
+                    document.getElementById('userNickname').textContent = nick;
+                    alert('暱稱更新成功！');
+                });
+        };
+
+        // 記錄飛行
+        document.getElementById('addRecordBtn').onclick = () => {
+            const date = document.getElementById('recordDate').value;
+            const hour = document.getElementById('recordHour').value;
+            if (!date) return alert('請選日期');
+            const month = date.substring(0,7); // YYYY-MM
+
+            db.collection('records').add({
+                uid: auth.currentUser.uid,
+                date: date,
+                month: month,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                alert('已記錄本次飛行 ✈️');
+                loadLeaderboard();
+            });
+        };
+
+        // 載入排行榜
+        function loadLeaderboard() {
+            const now = new Date();
+            const currentMonth = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+
+            db.collection('records').where('month', '==', currentMonth).get()
+                .then(snapshot => {
+                    const counts = {};
+                    snapshot.forEach(doc => {
+                        const uid = doc.data().uid;
+                        counts[uid] = (counts[uid] || 0) + 1;
+                    });
+
+                    const promises = Object.keys(counts).map(uid =>
+                        db.collection('users').doc(uid).get().then(doc => ({
+                            uid,
+                            count: counts[uid],
+                            nickname: doc.exists && doc.data().nickname || '匿名飛行員'
+                        }))
+                    );
+
+                    Promise.all(promises).then(entries => {
+                        entries.sort((a,b) => b.count - a.count);
+                        const tbody = document.getElementById('leaderboardBody');
+                        tbody.innerHTML = '';
+                        entries.slice(0,50).forEach((e, i) => {
+                            tbody.innerHTML += `<tr><td>${i+1}</td><td>${e.nickname}</td><td>${e.count}</td></tr>`;
+                        });
+                        document.getElementById('leaderboardLoading').classList.add('d-none');
+                        document.getElementById('leaderboardTable').classList.remove('d-none');
+                    });
+                });
+        }
+
+        // 登出
+        document.getElementById('logoutBtn').onclick = () => auth.signOut();
+    </script>
+</body>
+</html>
