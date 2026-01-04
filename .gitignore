@@ -42,3 +42,6 @@ PWA-SETUP.md
 # Firebase 本地快取（保留配置檔案）
 .firebase/
 
+# Vercel 本地配置（不需要提交）
+.vercel
+
