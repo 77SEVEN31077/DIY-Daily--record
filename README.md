@@ -1,52 +1,109 @@
 # 打飛機日常紀錄
 
-一個用於追蹤日常紀錄的 PWA 應用程式。
+一個使用 Node.js + Vite 構建的日常記錄網站。
 
-## 技術架構
+## 技術棧
 
-- **前端託管**: Vercel
-- **資料庫**: Firebase Firestore
-- **PWA**: 支援離線使用和安裝到主畫面
+- **Node.js** - 運行環境
+- **Vite** - 構建工具
+- **Firebase** - 後端服務（Firestore、Authentication）
+- **Vanilla JavaScript** - 前端框架
+- **PWA** - 漸進式網頁應用
 
-## 部署說明
+## 項目結構
 
-### Vercel 部署
-
-1. 在 [Vercel](https://vercel.com) 註冊/登入
-2. 點擊 "New Project"
-3. 連接你的 GitHub 儲存庫
-4. Vercel 會自動偵測設定並部署
-
-### 自動部署
-
-當你推送程式碼到 GitHub 時，Vercel 會自動重新部署：
-
-```bash
-git add .
-git commit -m "更新內容"
-git push
+```
+.
+├── src/              # 源代碼目錄
+│   ├── main.js      # 主入口文件
+│   ├── styles.css   # 樣式文件
+│   ├── firebase.js  # Firebase 配置
+│   ├── auth.js      # 認證功能
+│   ├── theme.js     # 主題切換
+│   ├── language.js  # 語言切換
+│   ├── records.js   # 記錄功能
+│   ├── leaderboard.js # 排行榜
+│   └── utils.js     # 工具函數
+├── public/          # 靜態資源
+│   ├── manifest.json
+│   ├── service-worker.js
+│   ├── icon-192.png
+│   └── icon-512.png
+├── index.html       # HTML 模板
+├── package.json     # 項目配置
+├── vite.config.js   # Vite 配置
+└── firebase.json    # Firebase 配置
 ```
 
-### Firebase 設定
+## 開發
 
-資料庫使用 Firebase Firestore，配置在 `index.html` 中的 `firebaseConfig`。
-
-## 本地開發
-
-直接在瀏覽器打開 `index.html` 即可，或使用本地伺服器：
+### 安裝依賴
 
 ```bash
-# 使用 Python
-python3 -m http.server 8000
-
-# 或使用 Node.js
-npx serve .
+npm install
 ```
 
-## 檔案說明
+### 啟動開發伺服器
 
-- `index.html` - 主要應用程式
-- `service-worker.js` - PWA Service Worker
-- `manifest.json` - PWA 設定
-- `vercel.json` - Vercel 部署配置
-- `firebase.json` - Firebase 配置（保留用於參考）
+```bash
+npm run dev
+```
+
+開發伺服器將在 `http://localhost:3000` 啟動。
+
+### 構建生產版本
+
+```bash
+npm run build
+```
+
+構建後的文件將輸出到 `dist/` 目錄。
+
+### 預覽生產版本
+
+```bash
+npm run preview
+```
+
+## 部署
+
+### 部署到 Firebase
+
+```bash
+npm run deploy:firebase
+```
+
+或手動構建後部署：
+
+```bash
+npm run build
+firebase deploy
+```
+
+### 部署到 Vercel
+
+```bash
+npm run deploy:vercel
+```
+
+或手動構建後部署：
+
+```bash
+npm run build
+vercel --prod
+```
+
+## 功能模組
+
+- **認證系統** (`src/auth.js`) - 用戶登入、註冊、登出
+- **主題切換** (`src/theme.js`) - 淺色/深色/系統主題
+- **語言切換** (`src/language.js`) - 多語言支持
+- **記錄功能** (`src/records.js`) - 新增和查看記錄
+- **排行榜** (`src/leaderboard.js`) - 顯示本月排行榜
+- **工具函數** (`src/utils.js`) - 分享、截圖等功能
+
+## 注意事項
+
+- 確保 Firebase 配置正確（`src/firebase.js`）
+- 構建前確保所有依賴已安裝
+- 部署前運行 `npm run build` 構建生產版本

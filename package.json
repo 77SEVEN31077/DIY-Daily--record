@@ -1,0 +1,23 @@
+{
+  "name": "diy-daily-record",
+  "version": "1.0.0",
+  "description": "打飛機日常紀錄 - 今天來一發？",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy:firebase": "npm run build && firebase deploy",
+    "deploy:vercel": "npm run build && vercel --prod"
+  },
+  "keywords": [
+    "daily-record",
+    "pwa"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {}
+}

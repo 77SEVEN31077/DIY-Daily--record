@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": ".",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -9,7 +9,11 @@
       "generate-icons.html",
       "create-icons.sh",
       "PWA-SETUP.md",
-      "40528b750e3c8466e7b14eb80707806e.jpg"
+      "40528b750e3c8466e7b14eb80707806e.jpg",
+      "src/**",
+      "vite.config.js",
+      "package.json",
+      "package-lock.json"
     ],
     "rewrites": [
       {
