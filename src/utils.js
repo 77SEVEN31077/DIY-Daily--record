@@ -46,6 +46,36 @@ export async function shareStats() {
 
 // 模態框管理
 window.openTerms = function() {
+    // 確保內容是最新語言
+    const texts = window.getTexts ? window.getTexts() : {};
+    const termsModalBody = document.querySelector('#termsModal .modal-body');
+    if (termsModalBody && texts['terms-welcome']) {
+        termsModalBody.innerHTML = `
+            <p>${texts['terms-welcome']}</p>
+            
+            <p><strong>${texts['terms-1-title']}</strong></p>
+            <p>${texts['terms-1-content']}</p>
+            
+            <p><strong>${texts['terms-2-title']}</strong></p>
+            <p>${texts['terms-2-content']}</p>
+            
+            <p><strong>${texts['terms-3-title']}</strong></p>
+            <p>${texts['terms-3-content']}</p>
+            
+            <p><strong>${texts['terms-4-title']}</strong></p>
+            <p>${texts['terms-4-content']}</p>
+            
+            <p><strong>${texts['terms-5-title']}</strong></p>
+            <p>${texts['terms-5-content']}</p>
+            
+            <p><strong>${texts['terms-6-title']}</strong></p>
+            <p>${texts['terms-6-content']}</p>
+        `;
+    }
+    const termsTitle = document.querySelector('#termsModal h3');
+    if (termsTitle && texts['terms-title']) {
+        termsTitle.textContent = texts['terms-title'];
+    }
     document.getElementById('termsModal').style.display = 'block';
 };
 
@@ -54,6 +84,34 @@ window.closeTerms = function() {
 };
 
 window.openPrivacy = function() {
+    // 確保內容是最新語言
+    const texts = window.getTexts ? window.getTexts() : {};
+    const privacyModalBody = document.querySelector('#privacyModal .modal-body');
+    if (privacyModalBody && texts['privacy-1-title']) {
+        privacyModalBody.innerHTML = `
+            <p><strong>${texts['privacy-1-title']}</strong></p>
+            <p>${texts['privacy-1-content']}</p>
+            
+            <p><strong>${texts['privacy-2-title']}</strong></p>
+            <p>${texts['privacy-2-p1']}</p>
+            
+            <p>${texts['privacy-2-p2']}</p>
+            
+            <p>${texts['privacy-2-p3']}</p>
+            
+            <p>${texts['privacy-2-p4']}</p>
+            
+            <p>${texts['privacy-2-p5']}</p>
+            
+            <p>${texts['privacy-2-p6']}</p>
+            
+            <p style="text-align: right; margin-top: 20px; color: #888;">${texts['privacy-author']}</p>
+        `;
+    }
+    const privacyTitle = document.querySelector('#privacyModal h3');
+    if (privacyTitle && texts['privacy-title']) {
+        privacyTitle.textContent = texts['privacy-title'];
+    }
     document.getElementById('privacyModal').style.display = 'block';
 };
 
@@ -144,7 +202,30 @@ export const translations = {
         'error-password-too-short': '密碼長度至少需要6個字元。',
         'error-email-in-use': '此電子郵件已被使用，請直接登入。',
         'error-weak-password': '密碼強度不足，請使用更複雜的密碼。',
-        'error-signup-failed': '註冊失敗：'
+        'error-signup-failed': '註冊失敗：',
+        'terms-welcome': '歡迎使用本網站。使用本網站即表示您同意遵守以下服務條款：',
+        'terms-1-title': '1. 服務說明',
+        'terms-1-content': '本網站提供個人追蹤記錄服務，僅供個人使用及娛樂目的。',
+        'terms-2-title': '2. 使用者責任',
+        'terms-2-content': '使用者應確保所提供資訊的真實性，並對其使用本網站的行為負責。請適度操作，注意身體健康。',
+        'terms-3-title': '3. 隱私保護',
+        'terms-3-content': '我們重視您的隱私，相關隱私政策請參閱「隱私政策」頁面。',
+        'terms-4-title': '4. 免責聲明',
+        'terms-4-content': '本網站僅用於個人追蹤，只有娛樂價值，不提供其他額外服務。網站不對使用者的任何行為或後果負責。',
+        'terms-5-title': '5. 服務變更',
+        'terms-5-content': '我們保留隨時修改或終止服務的權利，恕不另行通知。',
+        'terms-6-title': '6. 條款修改',
+        'terms-6-content': '我們保留隨時修改本服務條款的權利，修改後的條款將在網站上公布。',
+        'privacy-1-title': '1. 網站起源',
+        'privacy-1-content': '純粹為了打飛機而生',
+        'privacy-2-title': '2. 關於打飛機的意義',
+        'privacy-2-p1': '目前這個時代，"打飛機" 被歸納為是一個很 "低級" 的詞彙。甚至戀愛、約炮和嫖娼都比打飛機顯得要 "高級"，經常打飛機的人還會被貼上 "Loser" 的標籤。',
+        'privacy-2-p2': '但是打飛機其實是解決性慾成本最低的方式。',
+        'privacy-2-p3': '你不打飛機，你就得通過戀愛、約炮、或者嫖娼去解決你的性慾，但是這三者無論是從時間、精神、或金錢層面去看，成本都遠遠高於打飛機。所以，打飛機實際上是在以最高效的方式來解決自己的性慾。',
+        'privacy-2-p4': '"自己自足" 在任何領域都屬於 "高級" 的詞彙，但是到了 "解決性慾" 這件事情上，自給自足反而成了一個 "低級" 詞彙。所以我覺得，目前這個時代，世人對於 "打飛機" 這件事情有著嚴重的價值錯判。',
+        'privacy-2-p5': 'AI 帶來的信息爆炸時代開始逐漸把 "效率主義" 推向主流，而 "打飛機" 這個在 "解決性慾" 領域中最有 "效率" 的解決方案可能會被大家重新正視和定位。',
+        'privacy-2-p6': '未來會有越來越多的人選擇打飛機，整個世界會迎來一次屬於打飛機的大牛市，進入全民打飛機的時代。到時候你跟別人說你打飛機，別人會覺得你很時尚，你很高級。',
+        'privacy-author': '-殺破狼(X:@wolfyxbt)'
     },
     'en': {
         'title': 'DIY Record',
@@ -206,7 +287,30 @@ export const translations = {
         'error-password-too-short': 'Password must be at least 6 characters.',
         'error-email-in-use': 'This email is already in use, please sign in.',
         'error-weak-password': 'Password is too weak, please use a stronger password.',
-        'error-signup-failed': 'Sign up failed: '
+        'error-signup-failed': 'Sign up failed: ',
+        'terms-welcome': 'Welcome to this website. By using this website, you agree to comply with the following terms of service:',
+        'terms-1-title': '1. Service Description',
+        'terms-1-content': 'This website provides personal tracking and recording services for personal use and entertainment purposes only.',
+        'terms-2-title': '2. User Responsibilities',
+        'terms-2-content': 'Users should ensure the authenticity of the information provided and are responsible for their use of this website. Please use in moderation and take care of your health.',
+        'terms-3-title': '3. Privacy Protection',
+        'terms-3-content': 'We value your privacy. Please refer to the "Privacy Policy" page for related privacy policies.',
+        'terms-4-title': '4. Disclaimer',
+        'terms-4-content': 'This website is for personal tracking only and has entertainment value only. It does not provide any other additional services. The website is not responsible for any user actions or consequences.',
+        'terms-5-title': '5. Service Changes',
+        'terms-5-content': 'We reserve the right to modify or terminate the service at any time without prior notice.',
+        'terms-6-title': '6. Terms Modification',
+        'terms-6-content': 'We reserve the right to modify these terms of service at any time. Modified terms will be published on the website.',
+        'privacy-1-title': '1. Website Origin',
+        'privacy-1-content': 'Created purely for masturbation',
+        'privacy-2-title': '2. About the Meaning of Masturbation',
+        'privacy-2-p1': 'In this era, "masturbation" is categorized as a very "low-class" term. Even dating, hookups, and prostitution seem more "high-class" than masturbation, and people who frequently masturbate are labeled as "Losers".',
+        'privacy-2-p2': 'However, masturbation is actually the lowest-cost way to satisfy sexual desires.',
+        'privacy-2-p3': 'If you don\'t masturbate, you have to satisfy your sexual desires through dating, hookups, or prostitution. But from the perspectives of time, mental energy, or money, the costs of these three are far higher than masturbation. So, masturbation is actually the most efficient way to satisfy your own sexual desires.',
+        'privacy-2-p4': '"Self-sufficiency" is a "high-class" term in any field, but when it comes to "satisfying sexual desires", self-sufficiency becomes a "low-class" term. So I think that in this era, people have a serious misjudgment of the value of "masturbation".',
+        'privacy-2-p5': 'The information explosion era brought by AI is gradually pushing "efficiency-ism" into the mainstream, and "masturbation", the most "efficient" solution in the field of "satisfying sexual desires", may be re-examined and repositioned by everyone.',
+        'privacy-2-p6': 'In the future, more and more people will choose to masturbate. The whole world will usher in a bull market for masturbation, entering an era of universal masturbation. When you tell others that you masturbate, they will think you are fashionable and sophisticated.',
+        'privacy-author': '-殺破狼(X:@wolfyxbt)'
     },
     'zh-CN': {
         'title': '打飞机记录',
@@ -268,7 +372,30 @@ export const translations = {
         'error-password-too-short': '密码长度至少需要6个字符。',
         'error-email-in-use': '此电子邮件已被使用，请直接登录。',
         'error-weak-password': '密码强度不足，请使用更复杂的密码。',
-        'error-signup-failed': '注册失败：'
+        'error-signup-failed': '注册失败：',
+        'terms-welcome': '欢迎使用本网站。使用本网站即表示您同意遵守以下服务条款：',
+        'terms-1-title': '1. 服务说明',
+        'terms-1-content': '本网站提供个人追踪记录服务，仅供个人使用及娱乐目的。',
+        'terms-2-title': '2. 使用者责任',
+        'terms-2-content': '使用者应确保所提供信息的真实性，并对其使用本网站的行为负责。请适度操作，注意身体健康。',
+        'terms-3-title': '3. 隐私保护',
+        'terms-3-content': '我们重视您的隐私，相关隐私政策请参阅「隐私政策」页面。',
+        'terms-4-title': '4. 免责声明',
+        'terms-4-content': '本网站仅用于个人追踪，只有娱乐价值，不提供其他额外服务。网站不对使用者的任何行为或后果负责。',
+        'terms-5-title': '5. 服务变更',
+        'terms-5-content': '我们保留随时修改或终止服务的权利，恕不另行通知。',
+        'terms-6-title': '6. 条款修改',
+        'terms-6-content': '我们保留随时修改本服务条款的权利，修改后的条款将在网站上公布。',
+        'privacy-1-title': '1. 网站起源',
+        'privacy-1-content': '纯粹为了打飞机而生',
+        'privacy-2-title': '2. 关于打飞机的意义',
+        'privacy-2-p1': '目前这个时代，"打飞机" 被归纳为是一个很 "低级" 的词汇。甚至恋爱、约炮和嫖娼都比打飞机显得要 "高级"，经常打飞机的人还会被贴上 "Loser" 的标签。',
+        'privacy-2-p2': '但是打飞机其实是解决性欲成本最低的方式。',
+        'privacy-2-p3': '你不打飞机，你就得通过恋爱、约炮、或者嫖娼去解决你的性欲，但是这三者无论从时间、精神、或金钱层面去看，成本都远远高于打飞机。所以，打飞机实际上是在以最高效的方式来解决自己的性欲。',
+        'privacy-2-p4': '"自己自足" 在任何领域都属于 "高级" 的词汇，但是到了 "解决性欲" 这件事情上，自给自足反而成了一个 "低级" 词汇。所以我觉得，目前这个时代，世人对于 "打飞机" 这件事情有着严重的价值错判。',
+        'privacy-2-p5': 'AI 带来的信息爆炸时代开始逐渐把 "效率主义" 推向主流，而 "打飞机" 这个在 "解决性欲" 领域中最有 "效率" 的解决方案可能会被大家重新正视和定位。',
+        'privacy-2-p6': '未来会有越来越多的人选择打飞机，整个世界会迎来一次属于打飞机的大牛市，进入全民打飞机的时代。到时候你跟别人说你打飞机，别人会觉得你很时尚，你很高級。',
+        'privacy-author': '-殺破狼(X:@wolfyxbt)'
     }
 };
 
@@ -537,6 +664,68 @@ function updatePageTexts() {
     // 重新載入排行榜以更新文字
     if (typeof window.loadLeaderboard === 'function') {
         window.loadLeaderboard();
+    }
+    
+    // 更新服務條款模態框內容
+    const termsModalBody = document.querySelector('#termsModal .modal-body');
+    if (termsModalBody) {
+        termsModalBody.innerHTML = `
+            <p>${texts['terms-welcome']}</p>
+            
+            <p><strong>${texts['terms-1-title']}</strong></p>
+            <p>${texts['terms-1-content']}</p>
+            
+            <p><strong>${texts['terms-2-title']}</strong></p>
+            <p>${texts['terms-2-content']}</p>
+            
+            <p><strong>${texts['terms-3-title']}</strong></p>
+            <p>${texts['terms-3-content']}</p>
+            
+            <p><strong>${texts['terms-4-title']}</strong></p>
+            <p>${texts['terms-4-content']}</p>
+            
+            <p><strong>${texts['terms-5-title']}</strong></p>
+            <p>${texts['terms-5-content']}</p>
+            
+            <p><strong>${texts['terms-6-title']}</strong></p>
+            <p>${texts['terms-6-content']}</p>
+        `;
+    }
+    
+    // 更新服務條款標題
+    const termsTitle = document.querySelector('#termsModal h3');
+    if (termsTitle) {
+        termsTitle.textContent = texts['terms-title'];
+    }
+    
+    // 更新隱私政策模態框內容
+    const privacyModalBody = document.querySelector('#privacyModal .modal-body');
+    if (privacyModalBody) {
+        privacyModalBody.innerHTML = `
+            <p><strong>${texts['privacy-1-title']}</strong></p>
+            <p>${texts['privacy-1-content']}</p>
+            
+            <p><strong>${texts['privacy-2-title']}</strong></p>
+            <p>${texts['privacy-2-p1']}</p>
+            
+            <p>${texts['privacy-2-p2']}</p>
+            
+            <p>${texts['privacy-2-p3']}</p>
+            
+            <p>${texts['privacy-2-p4']}</p>
+            
+            <p>${texts['privacy-2-p5']}</p>
+            
+            <p>${texts['privacy-2-p6']}</p>
+            
+            <p style="text-align: right; margin-top: 20px; color: #888;">${texts['privacy-author']}</p>
+        `;
+    }
+    
+    // 更新隱私政策標題
+    const privacyTitle = document.querySelector('#privacyModal h3');
+    if (privacyTitle) {
+        privacyTitle.textContent = texts['privacy-title'];
     }
 }
 
