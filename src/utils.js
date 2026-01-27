@@ -203,6 +203,22 @@ export const translations = {
         'error-email-in-use': '此電子郵件已被使用，請直接登入。',
         'error-weak-password': '密碼強度不足，請使用更複雜的密碼。',
         'error-signup-failed': '註冊失敗：',
+        'messages-title': '留言板',
+        'message-input-placeholder': '輸入你的留言...',
+        'message-submit': '發送留言',
+        'message-submitting': '發送中...',
+        'message-empty-error': '請輸入留言內容！',
+        'message-too-long': '留言長度不能超過500個字元！',
+        'message-auth-error': '請先登入！',
+        'message-submit-failed': '發送失敗，請稍後再試。',
+        'messages-empty': '還沒有留言，來發表第一條吧！',
+        'messages-load-failed': '載入失敗，請稍後再試。',
+        'message-delete': '刪除',
+        'message-delete-confirm': '確定要刪除這條留言嗎？',
+        'load-more': '載入更多',
+        'time-just-now': '剛剛',
+        'time-minutes-ago': '分鐘前',
+        'time-yesterday': '昨天',
         'terms-welcome': '歡迎使用本網站。使用本網站即表示您同意遵守以下服務條款：',
         'terms-1-title': '1. 服務說明',
         'terms-1-content': '本網站提供個人追蹤記錄服務，僅供個人使用及娛樂目的。',
@@ -288,6 +304,22 @@ export const translations = {
         'error-email-in-use': 'This email is already in use, please sign in.',
         'error-weak-password': 'Password is too weak, please use a stronger password.',
         'error-signup-failed': 'Sign up failed: ',
+        'messages-title': 'Message Board',
+        'message-input-placeholder': 'Enter your message...',
+        'message-submit': 'Send Message',
+        'message-submitting': 'Sending...',
+        'message-empty-error': 'Please enter message content!',
+        'message-too-long': 'Message cannot exceed 500 characters!',
+        'message-auth-error': 'Please sign in first!',
+        'message-submit-failed': 'Failed to send, please try again later.',
+        'messages-empty': 'No messages yet, be the first to post!',
+        'messages-load-failed': 'Failed to load, please try again later.',
+        'message-delete': 'Delete',
+        'message-delete-confirm': 'Are you sure you want to delete this message?',
+        'load-more': 'Load More',
+        'time-just-now': 'Just now',
+        'time-minutes-ago': ' minutes ago',
+        'time-yesterday': 'Yesterday',
         'terms-welcome': 'Welcome to this website. By using this website, you agree to comply with the following terms of service:',
         'terms-1-title': '1. Service Description',
         'terms-1-content': 'This website provides personal tracking and recording services for personal use and entertainment purposes only.',
@@ -373,6 +405,22 @@ export const translations = {
         'error-email-in-use': '此电子邮件已被使用，请直接登录。',
         'error-weak-password': '密码强度不足，请使用更复杂的密码。',
         'error-signup-failed': '注册失败：',
+        'messages-title': '留言板',
+        'message-input-placeholder': '输入你的留言...',
+        'message-submit': '发送留言',
+        'message-submitting': '发送中...',
+        'message-empty-error': '请输入留言内容！',
+        'message-too-long': '留言长度不能超过500个字符！',
+        'message-auth-error': '请先登录！',
+        'message-submit-failed': '发送失败，请稍后再试。',
+        'messages-empty': '还没有留言，来发表第一条吧！',
+        'messages-load-failed': '加载失败，请稍后再试。',
+        'message-delete': '删除',
+        'message-delete-confirm': '确定要删除这条留言吗？',
+        'load-more': '加载更多',
+        'time-just-now': '刚刚',
+        'time-minutes-ago': '分钟前',
+        'time-yesterday': '昨天',
         'terms-welcome': '欢迎使用本网站。使用本网站即表示您同意遵守以下服务条款：',
         'terms-1-title': '1. 服务说明',
         'terms-1-content': '本网站提供个人追踪记录服务，仅供个人使用及娱乐目的。',
@@ -499,6 +547,33 @@ function updatePageTexts() {
     // 更新排行榜標題
     if (sectionTitles.length > 2) {
         sectionTitles[sectionTitles.length - 2].textContent = texts['rank-title'];
+    }
+    
+    // 更新留言板標題
+    const messagesTitle = document.getElementById('messages-title');
+    if (messagesTitle) {
+        messagesTitle.textContent = texts['messages-title'] || '留言板';
+    }
+    
+    // 更新留言輸入框 placeholder
+    const messageInput = document.getElementById('message-input');
+    if (messageInput) {
+        messageInput.placeholder = texts['message-input-placeholder'] || '輸入你的留言...';
+    }
+    
+    // 更新發送按鈕（只在非發送狀態時更新）
+    const messageSubmitBtn = document.querySelector('.message-submit-btn');
+    if (messageSubmitBtn) {
+        const currentText = messageSubmitBtn.textContent;
+        if (!currentText.includes('發送中') && !currentText.includes('Sending') && !currentText.includes('发送中')) {
+            messageSubmitBtn.textContent = texts['message-submit'] || '發送留言';
+        }
+    }
+    
+    // 更新載入更多按鈕
+    const loadMoreBtn = document.querySelector('.message-load-more-btn');
+    if (loadMoreBtn) {
+        loadMoreBtn.textContent = texts['load-more'] || '載入更多';
     }
     
     // 更新分享按鈕

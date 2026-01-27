@@ -124,6 +124,10 @@ function updateAuthUI(user) {
 // 監聽認證狀態變化
 onAuthStateChanged(auth, (user) => {
     updateAuthUI(user);
+    // 顯示/隱藏留言板
+    if (window.toggleMessagesSection) {
+        window.toggleMessagesSection(!!user);
+    }
 });
 
 // 開啟登入模態框

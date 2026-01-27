@@ -147,6 +147,34 @@
             <button class="btn btn-share" onclick="shareStats()">分享你的戰績 📸</button>
             <p id="share-msg" style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; display: none;">截圖已生成，連結已複製！</p>
         </div>
+
+        <!-- 留言板區塊（僅登入用戶可見） -->
+        <div class="section-box messages-section" id="messages-section">
+            <div class="section-title" id="messages-title">留言板</div>
+            
+            <!-- 留言輸入表單 -->
+            <div class="message-form">
+                <textarea 
+                    id="message-input" 
+                    class="message-input" 
+                    placeholder="輸入你的留言..."
+                    rows="3"
+                    maxlength="500"
+                ></textarea>
+                <button class="btn message-submit-btn" onclick="submitMessage()">發送留言</button>
+                <p id="message-error" style="color: #ff4444; font-size: 0.85rem; margin-top: 8px; display: none;"></p>
+            </div>
+
+            <!-- 留言列表 -->
+            <ul class="messages-list" id="messages-list">
+                <li class="message-empty">載入中...</li>
+            </ul>
+
+            <!-- 載入更多按鈕 -->
+            <div class="message-load-more" id="load-more-container" style="display: none;">
+                <button class="message-load-more-btn" onclick="loadMoreMessages()">載入更多</button>
+            </div>
+        </div>
     </div>
 
     <footer class="footer">

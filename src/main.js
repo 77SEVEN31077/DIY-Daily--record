@@ -7,6 +7,7 @@ import './auth.js';
 import { initTime, shareStats, initLanguage } from './utils.js';
 import { renderLocalHistory } from './records.js';
 import './leaderboard.js';
+import './messages.js';
 
 // 將 shareStats 暴露到全局
 window.shareStats = shareStats;
